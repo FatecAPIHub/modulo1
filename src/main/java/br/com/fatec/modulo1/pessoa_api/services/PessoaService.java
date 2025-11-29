@@ -20,7 +20,7 @@ public class PessoaService {
 
     public Page<Pessoa> listar(int pagina) {
         PageRequest paginacao = PageRequest.of(pagina, 10); // página, tamanho
-        return pessoaRepository.findAll(paginacao);
+        return pessoaRepository.findByAtivoTrue(paginacao);
     }
 
 //    public Optional<Pessoa> listarPorId(long id) { return pessoaRepository.findById(id); }

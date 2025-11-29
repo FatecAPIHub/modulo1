@@ -22,8 +22,8 @@ services:
   app:
     container_name: openjdk21
     build:
-      context: ./docker/openjdk
-      dockerfile: Dockerfile
+      context: ./
+      dockerfile: ./docker/openjdk/Dockerfile
     image: openjdk:fatec
     env_file:
       - ./.env

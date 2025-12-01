@@ -1,4 +1,5 @@
 services:
+#-------------------MYSQL--------------------------
   db:
     image: mysql:8.0
     restart: unless-stopped
@@ -18,7 +19,9 @@ services:
       interval: 10s
       timeout: 5s
       retries: 10
-
+    networks:
+      - graylog
+#-------------------JDK(SPRING BOOT)--------------------------
   app:
     container_name: openjdk21
     build:
@@ -32,12 +35,79 @@ services:
     depends_on:
       db:
         condition: service_healthy
+      graylog:
+        condition: service_started
     healthcheck:
       test: ["CMD-SHELL", "curl -fsS http://localhost:8080/ || exit 1"]
       interval: 30s
       timeout: 5s
       retries: 5
       start_period: 20s
-
+    networks:
+      - graylog
+  #-------------------MONGODB / GRAYLOG--------------------------
+  mongodb:
+    image: mongo:6.0
+    container_name: graylog-mongo
+    volumes:
+      - mongo_data:/data/db
+    healthcheck:
+      test: echo 'db.runCommand("ping").ok' | mongosh localhost:27017/test --quiet
+      interval: 10s
+      timeout: 5s
+      retries: 5
+    networks:
+      - graylog
+  #-------------------ELASTICSEARCH / GRAYLOG--------------------------
+  elasticsearch:
+    image: docker.elastic.co/elasticsearch/elasticsearch:7.17.9
+    container_name: graylog-elasticsearch
+    environment:
+      - http.host=0.0.0.0
+      - transport.host=localhost
+      - network.host=0.0.0.0
+      - "ES_JAVA_OPTS=-Xms512m -Xmx512m"
+      - discovery.type=single-node
+    volumes:
+      - es_data:/usr/share/elasticsearch/data
+    healthcheck:
+      test: [ "CMD-SHELL", "curl -f http://localhost:9200/_cluster/health || exit 1" ]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+    networks:
+      - graylog
+  #------------------- GRAYLOG--------------------------
+  graylog:
+    image: graylog/graylog:5.0
+    container_name: graylog
+    environment:
+      - GRAYLOG_PASSWORD_SECRET=oEKcIpqvVtiLVnSwiT
+      - GRAYLOG_ROOT_PASSWORD_SHA2=8c6976e5b5410415bde908bd4dee15dfb167a9c873fc4bb8a81f6f2ab448a918
+      - GRAYLOG_HTTP_EXTERNAL_URI=http://127.0.0.1:9000/
+      - GRAYLOG_MONGODB_URI=mongodb://mongodb:27017/graylog
+    ports:
+      - "9000:9000"
+      - "12201:12201"
+      - "12201:12201/udp"
+      - "1514:1514"
+      - "1514:1514/udp"
+    volumes:
+      - graylog_data:/usr/share/graylog/data
+    depends_on:
+      mongodb:
+        condition: service_healthy
+      elasticsearch:
+        condition: service_healthy
+    networks:
+      - graylog
+  #------------------- METADATA--------------------------
 volumes:
+  mongo_data:
+  es_data:
+  graylog_data:
   mydb:
+
+networks:
+  graylog:
+    driver: bridge

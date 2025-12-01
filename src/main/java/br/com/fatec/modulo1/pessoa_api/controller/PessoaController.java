@@ -2,8 +2,8 @@ package br.com.fatec.modulo1.pessoa_api.controller;
 
 import br.com.fatec.modulo1.pessoa_api.model.Pessoa;
 import br.com.fatec.modulo1.pessoa_api.services.PessoaService;
-//import org.slf4j.Logger;
-//import org.slf4j.LoggerFactory;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -12,16 +12,17 @@ import org.springframework.data.domain.Page;
 
 @RestController
 @RequestMapping(path = "/api")
-public class PessoaController {
+public class  PessoaController {
     private final PessoaService service;
 
     public PessoaController(PessoaService service) {
         this.service = service;
     }
 
-    @GetMapping("/listar")
-    public ResponseEntity<Page<Pessoa>> listar(
-            @RequestParam(defaultValue = "0") int pagina) {
+    private static final Logger logger = LoggerFactory.getLogger(PessoaController.class);
+
+    @GetMapping
+    public ResponseEntity<Page<Pessoa>> listar(@RequestParam(defaultValue = "0") int pagina) {
         return ResponseEntity.ok(service.listar(pagina));
     }
 

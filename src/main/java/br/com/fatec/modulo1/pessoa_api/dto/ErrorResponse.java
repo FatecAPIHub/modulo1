@@ -1,6 +1,7 @@
 package br.com.fatec.modulo1.pessoa_api.dto;
 
 import com.fasterxml.jackson.annotation.JsonInclude;
+
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
@@ -36,26 +37,61 @@ public class ErrorResponse {
     }
 
     // Getters e Setters
-    public LocalDateTime getTimestamp() { return timestamp; }
-    public void setTimestamp(LocalDateTime timestamp) { this.timestamp = timestamp; }
+    public LocalDateTime getTimestamp() {
+        return timestamp;
+    }
 
-    public int getStatus() { return status; }
-    public void setStatus(int status) { this.status = status; }
+    public void setTimestamp(LocalDateTime timestamp) {
+        this.timestamp = timestamp;
+    }
 
-    public String getError() { return error; }
-    public void setError(String error) { this.error = error; }
+    public int getStatus() {
+        return status;
+    }
 
-    public String getMessage() { return message; }
-    public void setMessage(String message) { this.message = message; }
+    public void setStatus(int status) {
+        this.status = status;
+    }
 
-    public String getPath() { return path; }
-    public void setPath(String path) { this.path = path; }
+    public String getError() {
+        return error;
+    }
 
-    public String getRequestId() { return requestId; }
-    public void setRequestId(String requestId) { this.requestId = requestId; }
+    public void setError(String error) {
+        this.error = error;
+    }
 
-    public List<FieldError> getFieldErrors() { return fieldErrors; }
-    public void setFieldErrors(List<FieldError> fieldErrors) { this.fieldErrors = fieldErrors; }
+    public String getMessage() {
+        return message;
+    }
+
+    public void setMessage(String message) {
+        this.message = message;
+    }
+
+    public String getPath() {
+        return path;
+    }
+
+    public void setPath(String path) {
+        this.path = path;
+    }
+
+    public String getRequestId() {
+        return requestId;
+    }
+
+    public void setRequestId(String requestId) {
+        this.requestId = requestId;
+    }
+
+    public List<FieldError> getFieldErrors() {
+        return fieldErrors;
+    }
+
+    public void setFieldErrors(List<FieldError> fieldErrors) {
+        this.fieldErrors = fieldErrors;
+    }
 
     public static class FieldError {
         private String field;
@@ -68,13 +104,28 @@ public class ErrorResponse {
             this.message = message;
         }
 
-        public String getField() { return field; }
-        public void setField(String field) { this.field = field; }
+        public String getField() {
+            return field;
+        }
 
-        public Object getRejectedValue() { return rejectedValue; }
-        public void setRejectedValue(Object rejectedValue) { this.rejectedValue = rejectedValue; }
+        public void setField(String field) {
+            this.field = field;
+        }
 
-        public String getMessage() { return message; }
-        public void setMessage(String message) { this.message = message; }
+        public Object getRejectedValue() {
+            return rejectedValue;
+        }
+
+        public void setRejectedValue(Object rejectedValue) {
+            this.rejectedValue = rejectedValue;
+        }
+
+        public String getMessage() {
+            return message;
+        }
+
+        public void setMessage(String message) {
+            this.message = message;
+        }
     }
 }

@@ -26,7 +26,8 @@ public class Pessoa {
         this.ativo = ativo;
     }
 
-    public Pessoa() {}
+    public Pessoa() {
+    }
 
     public Long getId() {
         return id;

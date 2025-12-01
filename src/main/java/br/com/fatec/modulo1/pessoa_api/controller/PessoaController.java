@@ -12,7 +12,7 @@ import org.springframework.data.domain.Page;
 
 @RestController
 @RequestMapping(path = "/api")
-public class  PessoaController {
+public class PessoaController {
     private final PessoaService service;
 
     public PessoaController(PessoaService service) {
@@ -23,29 +23,30 @@ public class  PessoaController {
 
     @GetMapping
     public ResponseEntity<Page<Pessoa>> listar(@RequestParam(defaultValue = "0") int pagina) {
-        return ResponseEntity.ok(service.listar(pagina));
+        logger.debug("Controller: listando pessoas - página {}", pagina);
+        Page<Pessoa> pessoas = service.listar(pagina);
+        return ResponseEntity.ok(pessoas);
     }
 
     @PostMapping
-    public Pessoa salvar(@RequestBody Pessoa pessoa) { return service.salvar(pessoa); }
-
-    @DeleteMapping("/{id}")
-    public ResponseEntity<String> deletar(@PathVariable Long id) {
-        if (service.deletarPorId(id)) {
-            return ResponseEntity.ok("Pessoa deletada com sucesso.");
-        } else {
-            return ResponseEntity.status(HttpStatus.NOT_FOUND)
-                    .body("Pessoa com ID " + id + " não encontrada.");
-        }
+    public ResponseEntity<Pessoa> salvar(@RequestBody Pessoa pessoa) {
+        logger.debug("Controller: salvando pessoa {}", pessoa);
+        Pessoa pessoaSalva = service.salvar(pessoa);
+        return ResponseEntity.status(HttpStatus.CREATED).body(pessoaSalva);
     }
 
-    @PutMapping
-    public ResponseEntity<String> atualizar(@RequestBody Pessoa pessoa) {
-        if (service.atualizar(pessoa))
-            return ResponseEntity.ok("Pessoa Atualizada com sucesso");
-        else {
-            return ResponseEntity.status(HttpStatus.NOT_FOUND)
-                    .body("Pessoa não encontrada.");
-        }
+    @PutMapping("/{id}")
+    public ResponseEntity<Pessoa> atualizar(@PathVariable Long id, @RequestBody Pessoa pessoa) {
+        logger.debug("Controller: atualizando pessoa - ID {}", id);
+        pessoa.setId(id);
+        Pessoa pessoaAtualizada = service.atualizar(pessoa);
+        return ResponseEntity.ok(pessoaAtualizada);
+    }
+
+    @DeleteMapping("/{id}")
+    public ResponseEntity<Void> deletar(@PathVariable Long id) {
+        logger.debug("Controller: deletando pessoa - ID {}", id);
+        service.deletarPorId(id);
+        return ResponseEntity.noContent().build();
     }
 }

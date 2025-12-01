@@ -1,0 +1,24 @@
+meta {
+  name: Create a User
+  type: http
+  seq: 2
+}
+
+post {
+  url: http://localhost:8080/api
+  body: json
+  auth: inherit
+}
+
+body:json {
+  {
+    "nome": "random",
+    "dt_nascimento": "19/05/1999",
+    "ativo": "true"
+  }
+}
+
+settings {
+  encodeUrl: true
+  timeout: 0
+}

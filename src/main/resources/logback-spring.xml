@@ -9,10 +9,11 @@
         </encoder>
     </appender>
 
+
     <!-- GELF appender for Graylog -->
     <appender name="GELF" class="de.siegmar.logbackgelf.GelfUdpAppender">
-        <graylogHost>graylog</graylogHost>
-        <graylogPort>12201</graylogPort>
+        <graylogHost>${GELF_HOST:-127.0.0.1}</graylogHost>
+        <graylogPort>${GELF_PORT:-12201}</graylogPort>
         <encoder class="de.siegmar.logbackgelf.GelfEncoder">
             <includeRawMessage>false</includeRawMessage>
             <includeMarker>true</includeMarker>

@@ -1,10 +1,10 @@
 meta {
-  name: Create a User
+  name: Update User
   type: http
-  seq: 2
+  seq: 4
 }
 
-post {
+put {
   url: http://localhost:8080/api
   body: json
   auth: inherit
@@ -12,9 +12,10 @@ post {
 
 body:json {
   {
-    "nome": "Another",
-    "dt_nascimento": "13/05/1999",
-    "ativo": "false"
+    "id": 1,
+    "nome": "random",
+    "dt_nascimento": "19/05/1999",
+    "ativo": "true"
   }
 }
 

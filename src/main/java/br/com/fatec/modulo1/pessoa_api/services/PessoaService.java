@@ -23,8 +23,6 @@ public class PessoaService {
         return pessoaRepository.findByAtivoTrue(paginacao);
     }
 
-//    public Optional<Pessoa> listarPorId(long id) { return pessoaRepository.findById(id); }
-
     public Pessoa salvar(Pessoa p) { return pessoaRepository.save(p);}
 
     public boolean deletarPorId(Long id)

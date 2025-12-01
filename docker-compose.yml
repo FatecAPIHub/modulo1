@@ -1,19 +1,14 @@
 services:
 #-------------------MYSQL--------------------------
-  db:
+  mysql:
     image: mysql:8.0
     restart: unless-stopped
     env_file:
       - ./.env
-    environment:
-      MYSQL_DATABASE: "db"
-      MYSQL_USER: "bruno"
-      MYSQL_PASSWORD: "bruno"
-      MYSQL_ROOT_PASSWORD: "admin"
     ports:
       - "3306:3306"
     volumes:
-      - mydb:/var/lib/mysql
+      - db_mysql:/var/lib/mysql
     healthcheck:
       test: ["CMD-SHELL", "mysqladmin ping -h 127.0.0.1 -uroot -p$MYSQL_ROOT_PASSWORD || exit 1"]
       interval: 10s
@@ -33,7 +28,7 @@ services:
     ports:
       - "8080:8080"
     depends_on:
-      db:
+      mysql:
         condition: service_healthy
       graylog:
         condition: service_started
@@ -101,12 +96,12 @@ services:
         condition: service_healthy
     networks:
       - graylog
-  #------------------- METADATA--------------------------
+  #------------------- METADATA-------z-------------------
 volumes:
   mongo_data:
   es_data:
   graylog_data:
-  mydb:
+  db_mysql:
 
 networks:
   graylog:

@@ -15,14 +15,3 @@ COPY --from=build /app/target/*.jar app.jar
 EXPOSE 8080
 
 ENTRYPOINT ["java", "-jar", "app.jar"]
-
-#FROM openjdk:21-jdk-alpine
-#
-#WORKDIR /app
-#
-#COPY pom.xml .
-#COPY src ./src
-#
-#EXPOSE 8080
-#
-#ENTRYPOINT ["java", "-jar", "/app/myapp.jar"]

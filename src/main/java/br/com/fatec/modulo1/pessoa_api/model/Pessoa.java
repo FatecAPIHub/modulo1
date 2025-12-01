@@ -52,7 +52,7 @@ public class Pessoa {
         this.nome = nome;
     }
 
-    public boolean isAtivo() {
+    public boolean getAtivo() {
         return ativo;
     }
 
